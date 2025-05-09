@@ -12,6 +12,9 @@
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
+// Firmware version
+constexpr char FIRMWARE_VERSION[] = "v1.1";
+
 // Config
 constexpr uint16_t telemetrySendInterval = 5000U;
 constexpr uint32_t SERIAL_DEBUG_BAUD = 115200U;
@@ -46,6 +49,7 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(SERIAL_DEBUG_BAUD);
+  Serial.println("Current firmware version: " + String(FIRMWARE_VERSION));
   pinMode(DHT_PIN, OUTPUT);
 
   connectWifi();
@@ -217,6 +221,7 @@ void connectThingsboard()
     tb.sendAttributeData("bssid", WiFi.BSSIDstr().c_str());
     tb.sendAttributeData("localIp", WiFi.localIP().toString().c_str());
     tb.sendAttributeData("ssid", WiFi.SSID().c_str());
+    tb.sendAttributeData("firmwareVer", FIRMWARE_VERSION);
     Serial.println("Subscribe to ThingsBoard done");
   }
 }
